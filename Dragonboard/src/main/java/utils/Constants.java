@@ -6,7 +6,7 @@ public class Constants {
    public static final String TRAFFIC_MODE_NAME = "traffic";
    public static final String BUS_MODE_NAME = "bus";
    public static final String FIRESTORE_URL = "https://ulate-6625b.firebaseio.com/";
-   public static final String AUTH_CONFIG = "ulate-6625b-ad396ad2785a.json";
+   public static final String AUTH_CONFIG = "./ulate-6625b-ad396ad2785a.json";
    public static final String BOARD_ID = "7qOUSBuRUMwagevZd8ch";
    public static final String BOARDS_KEY = "boards";
    public static final String LINES_KEY = "lines";

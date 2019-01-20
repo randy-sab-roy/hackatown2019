@@ -33,7 +33,7 @@ public class DatabaseHandler {
 
    private DatabaseHandler() {
       try {
-         FileInputStream serviceAccount = new FileInputStream(getClass().getClassLoader().getResource(Constants.AUTH_CONFIG).getFile());
+         FileInputStream serviceAccount = new FileInputStream(ClassLoader.getSystemClassLoader().getResource(Constants.AUTH_CONFIG).getFile());
          FirebaseOptions options = new FirebaseOptions.Builder()
                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                .setDatabaseUrl(Constants.FIRESTORE_URL)
