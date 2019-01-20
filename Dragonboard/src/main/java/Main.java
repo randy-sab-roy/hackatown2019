@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,7 @@ public class Main {
             error.printStackTrace();
             return;
          }
+
          final List<AbstractSerialMessage> serialMessages = value.getDocuments()
                .stream()
                .map(document -> new RowConfig(Integer.parseInt(document.getId()), RowMode.getRowMode(document.get(Constants.SERVICE_KEY).toString())))
