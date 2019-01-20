@@ -17,9 +17,9 @@ public class TrafficMessage extends AbstractSerialMessage {
       final byte[] bytes = new byte[AbstractSerialMessage.MESSAGE_ARGS_BYTE_COUNT];
 
       final int rgb = trafficIntensity.color;
-      bytes[0] = (byte) ((rgb >> 0x16) & 0xff);
-      bytes[1] = (byte) ((rgb >> 0xf) & 0xff);
-      bytes[2] = (byte) ((rgb >> 0x8) & 0xff);
+      bytes[0] = (byte) ((rgb >> 16) & 0xff);
+      bytes[1] = (byte) ((rgb >> 8) & 0xff);
+      bytes[2] = (byte) ((rgb >> 0) & 0xff);
       return bytes;
    }
 }
