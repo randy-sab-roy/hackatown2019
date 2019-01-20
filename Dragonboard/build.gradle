@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'team-GLaDOS'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    google() // Google's Maven repository
+}
+
+dependencies {
+    compile 'com.fazecast:jSerialComm:[2.0.0,3.0.0)'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+}
+
+application {
+    mainClassName = "Main"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+}
