@@ -12,6 +12,18 @@ public class Constants {
    public static final String LINES_KEY = "lines";
    public static final String SERVICE_KEY = "service";
    public static final MetroStatus DEFAULT_METRO_STATUS = new MetroStatus(false, true, false, false);
-   public static final double DEFAULT_TRAFFIC_PERCENTAGE = 1.0;
    public static final double DEFAULT_BUS_ARRIVAL_PERCENTAGE = 0.6;
+
+   public static TrafficIntensity trafficIntensityForRow(int rowIndex) {
+      switch (rowIndex) {
+         case 0:
+         case 1:
+            return TrafficIntensity.HIGH;
+         case 2:
+         case 3:
+            return TrafficIntensity.LOW;
+         default:
+            return TrafficIntensity.HIGH;
+      }
+   }
 }

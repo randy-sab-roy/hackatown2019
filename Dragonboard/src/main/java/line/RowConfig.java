@@ -24,7 +24,7 @@ public class RowConfig {
          case METRO:
             return new MetroMessage(rowIndex, Constants.DEFAULT_METRO_STATUS);
          case TRAFFIC:
-            return new TrafficMessage(rowIndex, Constants.DEFAULT_TRAFFIC_PERCENTAGE);
+            return new TrafficMessage(rowIndex, Constants.trafficIntensityForRow(rowIndex));
          case BUS:
             return new BusMessage(rowIndex, Constants.DEFAULT_BUS_ARRIVAL_PERCENTAGE);
          default:
