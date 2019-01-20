@@ -23,6 +23,7 @@ long timer;
 byte row = -1;
 byte mode = -1;
 byte option[3] = {0, 0, 0};
+byte buffer[5];
 
 void initRegisters()
 {
@@ -57,7 +58,7 @@ void setRowOff()
 // Display the metro state
 void setMetro()
 {
-    animationFlags[row] = option[0];
+    animationFlags[row] = option[0] << 1;
     for (uint8_t i = 0; i < 4; i++)
         setPixelColor((row * LED_PER_ROW) + i + 1, metroColors[i]);
 
@@ -162,26 +163,30 @@ void setup()
 {
     Serial.begin(9600);
     pinMode(DATA_PIN, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
     pixels.setBrightness(100);
     pixels.begin();
+    pixels.clear();
+    pixels.show();
     initRegisters();
-
-    row = 0;
-    mode = 1;
-    option[0] = 0b0010;
-    updateRow();
 }
 
 void loop()
 {
     if (Serial.available() > 0)
     {
-        row = Serial.read();
-        mode = Serial.read();
-        option[0] = Serial.read();
-        option[1] = Serial.read();
-        option[2] = Serial.read();
-        updateRow();
+        size_t readBytes = Serial.readBytes(buffer, 5);
+
+        if (readBytes == 5)
+        {
+            row = buffer[0];
+            mode = buffer[1];
+            option[0] = buffer[2];
+            option[1] = buffer[3];
+            option[2] = buffer[4];
+
+            updateRow();
+        }
     }
 
     updateStates();
