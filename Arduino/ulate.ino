@@ -11,6 +11,7 @@ const uint32_t GREEN = pixels.Color(0, 255, 0);
 const uint32_t RED = pixels.Color(255, 0, 0);
 const uint32_t BLUE = pixels.Color(0, 0, 255);
 const uint32_t BLACK = pixels.Color(0, 0, 0);
+const uint32_t WHITE = pixels.Color(255, 255, 255);
 
 const uint32_t METRO_BLUE = pixels.Color(0, 159, 227);
 const uint32_t METRO_YELLOW = pixels.Color(255, 228, 12);
@@ -30,6 +31,15 @@ void setPixelColor(uint8_t pixelNumber, uint32_t color)
         pixelNumber = (((row + 1) * LED_PER_ROW) - 1) - (pixelNumber % LED_PER_ROW);
     }
     pixels.setPixelColor(pixelNumber, color);
+}
+
+void rowOn()
+{
+    for (uint16_t i = row * LED_PER_ROW; i < (row + 1) * LED_PER_ROW; i++)
+    {
+        setPixelColor(i, WHITE);
+    }
+    pixels.show();
 }
 
 void rowOff()
@@ -67,7 +77,7 @@ void bus()
     }
 }
 
-void updateDisplay()
+void updateRow()
 {
     modes[row] = mode;
     switch (mode)
@@ -98,18 +108,49 @@ void setup()
     pinMode(DATA_PIN, OUTPUT);
     pixels.setBrightness(100);
     pixels.begin();
+
+    for (uint16_t i = 0; i < 7; i++)
+    {
+        setPixelColor(i, WHITE);
+    }
+    pixels.show();
+    delay(3000);
 }
 
 void loop()
 {
-    if (Serial.available() > 0)
-    {
-        row = Serial.read();
-        mode = Serial.read();
-        option[0] = Serial.read();
-        option[1] = Serial.read();
-        option[2] = Serial.read();
-        updateDisplay();
-    }
-    // update();
+    // For test purposes
+    row = 0;
+    mode = 0;
+    updateRow();
+    delay(3000);
+
+    row = 0;
+    mode = 1;
+    updateRow();
+    delay(3000);
+
+    row = 0;
+    mode = 2;
+    option[0] = 0xff;
+    option[1] = 0x88;
+    option[2] = 0x00;
+    updateRow();
+    delay(3000);
+
+    row = 0;
+    mode = 3;
+    option[0] = 50;
+    updateRow();
+    delay(3000);
+
+    // if (Serial.available() > 0)
+    // {
+    //     row = Serial.read();
+    //     mode = Serial.read();
+    //     option[0] = Serial.read();
+    //     option[1] = Serial.read();
+    //     option[2] = Serial.read();
+    //     updateRow();
+    // }
 }
