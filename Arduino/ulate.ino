@@ -58,7 +58,7 @@ void setRowOff()
 // Display the metro state
 void setMetro()
 {
-    animationFlags[row] = option[0];
+    animationFlags[row] = option[0] << 1;
     for (uint8_t i = 0; i < 4; i++)
         setPixelColor((row * LED_PER_ROW) + i + 1, metroColors[i]);
 
