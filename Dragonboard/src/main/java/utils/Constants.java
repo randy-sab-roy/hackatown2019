@@ -11,7 +11,7 @@ public class Constants {
    public static final String BOARDS_KEY = "boards";
    public static final String LINES_KEY = "lines";
    public static final String SERVICE_KEY = "service";
-   public static final MetroStatus DEFAULT_METRO_STATUS = new MetroStatus(false, true, false, false);
+   public static final MetroStatus DEFAULT_METRO_STATUS = new MetroStatus(true, false, false, false);
    public static final double DEFAULT_BUS_ARRIVAL_PERCENTAGE = 0.6;
 
    public static TrafficIntensity trafficIntensityForRow(int rowIndex) {
