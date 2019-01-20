@@ -1,9 +1,11 @@
 package serial.serial_messages;
 
+import utils.RowMode;
+
 public class ClearMessage extends AbstractSerialMessage {
 
    public ClearMessage(int row) {
-      super(row, RowMode.CLEAR);
+      super(row, RowMode.OFF);
    }
 
    @Override

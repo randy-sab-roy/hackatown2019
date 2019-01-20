@@ -1,6 +1,7 @@
 package serial.serial_messages;
 
-import metro.MetroStatus;
+import utils.MetroStatus;
+import utils.RowMode;
 
 public class MetroMessage extends AbstractSerialMessage {
 
@@ -15,10 +16,10 @@ public class MetroMessage extends AbstractSerialMessage {
    protected byte[] encodeArgs() {
       final byte[] bytes = new byte[AbstractSerialMessage.MESSAGE_ARGS_BYTE_COUNT];
       int encodedMetroStatus = 0;
-      encodedMetroStatus += metroStatus.isGreenStatusOk ? (1 << 0x3) : 0;
-      encodedMetroStatus += metroStatus.isOrangeStatusOk ? (1 << 0x2) : 0;
-      encodedMetroStatus += metroStatus.isYellowStatusOk ? (1 << 0x1) : 0;
-      encodedMetroStatus += metroStatus.isBlueStatusOk ? (1 << 0x0) : 0;
+      encodedMetroStatus += metroStatus.isGreenFaulty ? (1 << 0x3) : 0;
+      encodedMetroStatus += metroStatus.isOrangeFaulty ? (1 << 0x2) : 0;
+      encodedMetroStatus += metroStatus.isYellowFaulty ? (1 << 0x1) : 0;
+      encodedMetroStatus += metroStatus.isBlueFaulty ? (1 << 0x0) : 0;
 
       bytes[0] = ((byte) encodedMetroStatus);
       return bytes;

@@ -1,5 +1,7 @@
 package serial.serial_messages;
 
+import utils.RowMode;
+
 // 5 bytes
 // 0: No row [0,1,2,3]
 // 1: Mode [0,1,2,3]

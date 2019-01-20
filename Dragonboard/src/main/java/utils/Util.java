@@ -11,4 +11,7 @@ public class Util {
       return reversed;
    }
 
+   public static void spin() {
+      while (true) ; // ¯\_(ツ)_/¯
+   }
 }
