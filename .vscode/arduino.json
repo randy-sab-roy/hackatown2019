@@ -1,0 +1,8 @@
+{
+    "output": "Arduino\\build",
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328old",
+    "port": "COM6",
+    "programmer": "AVR ISP",
+    "sketch": "Arduino\\ulate.ino"
+}
