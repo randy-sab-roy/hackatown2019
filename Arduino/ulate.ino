@@ -163,17 +163,19 @@ void setup()
 {
     Serial.begin(9600);
     pinMode(DATA_PIN, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
     pixels.setBrightness(100);
     pixels.begin();
+    pixels.clear();
+    pixels.show();
     initRegisters();
-    Serial.println("Setup done!");
 }
 
 void loop()
 {
     if (Serial.available() > 0)
     {
-        size_t readBytes = Serial.readBytes(&buffer, 5);
+        size_t readBytes = Serial.readBytes(buffer, 5);
 
         if (readBytes == 5)
         {
@@ -182,6 +184,7 @@ void loop()
             option[0] = buffer[2];
             option[1] = buffer[3];
             option[2] = buffer[4];
+
             updateRow();
         }
     }
