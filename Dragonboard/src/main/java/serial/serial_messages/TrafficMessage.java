@@ -2,6 +2,8 @@ package serial.serial_messages;
 
 import java.awt.Color;
 
+import utils.RowMode;
+
 import static utils.Util.constrain;
 
 public class TrafficMessage extends AbstractSerialMessage {

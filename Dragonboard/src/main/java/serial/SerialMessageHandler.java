@@ -2,6 +2,7 @@ package serial;
 
 
 import java.util.Arrays;
+import java.util.List;
 
 import serial.serial_messages.AbstractSerialMessage;
 
@@ -44,4 +45,13 @@ public class SerialMessageHandler {
       }
    }
 
+   public void sendMessages(List<AbstractSerialMessage> serialMessages) {
+      serialMessages.forEach(message -> {
+         sendMessage(message);
+         try {
+            Thread.sleep(100);
+         } catch (InterruptedException ignored) {
+         }
+      });
+   }
 }

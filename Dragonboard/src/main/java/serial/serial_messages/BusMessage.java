@@ -1,11 +1,13 @@
 package serial.serial_messages;
 
+import utils.RowMode;
+
 public class BusMessage extends AbstractSerialMessage {
 
    private final double arrivalPercentage;
 
    public BusMessage(int row, double arrivalPercentage) {
-      super(row, RowMode.AUTOBUS);
+      super(row, RowMode.BUS);
       this.arrivalPercentage = arrivalPercentage;
    }
 
