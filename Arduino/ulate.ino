@@ -20,6 +20,7 @@ const uint32_t metroColors[] = {pixels.Color(0, 0, 255), pixels.Color(255, 255, 
 byte modes[ROWS]; // 0 = Not assigned     1 = Metro     2 = Traffic     3 = Bus
 int animationFlags[ROWS];
 long timer;
+int demoPercentage = 100;
 
 byte row = -1;
 byte mode = -1;
@@ -119,6 +120,25 @@ void updateStates()
             }
         }
     }
+    // Demo mode
+    if (millis() % 1000 > 995)
+    {
+        --demoPercentage;
+        if (demoPercentage <= 0)
+        {
+            demoPercentage = 100;
+        }
+        for (uint8_t i = 0; i < ROWS; i++)
+        {
+            if (modes[i] == 3)
+            {
+                row = i;
+                mode = 3;
+                option[0] = demoPercentage;
+                updateRow();
+            }
+        }
+    }
 }
 
 void updateRow()
@@ -160,7 +180,7 @@ void setup()
     pixels.show();
     initRegisters();
 
-    // Testing code
+    // Initial setup with colors
     row = 0;
     mode = 1;
     option[0] = 0b0100;
@@ -186,7 +206,6 @@ void setup()
     updateRow();
 }
 
-int temp = 70;
 void loop()
 {
     if (Serial.available() > 0)
@@ -204,23 +223,8 @@ void loop()
             updateRow();
         }
     }
-    // Testing code
 
-    if (millis() % 1000 > 995)
-    {
-        row = 2;
-        mode = 3;
-        option[0] = --temp;
-        updateRow();
-        
-        if (temp <= 0) {
-            temp = 100;
-        }
-        
-    }
-
-    //
-
+    // Update display
     updateStates();
     pixels.show();
 }
