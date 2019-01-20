@@ -3,7 +3,7 @@ package utils;
 public class Constants {
    public static final String OFF_MODE_NAME = "off";
    public static final String METRO_MODE_NAME = "metro";
-   public static final String TRAFFIC_MODE_NAME = "traffic";
+   public static final String TRAFFIC_MODE_NAME = "trafic";
    public static final String BUS_MODE_NAME = "bus";
    public static final String FIRESTORE_URL = "https://ulate-6625b.firebaseio.com/";
    public static final String AUTH_CONFIG = "./ulate-6625b-ad396ad2785a.json";

@@ -35,10 +35,11 @@ public class SerialMessageHandler {
 
    public void sendMessage(AbstractSerialMessage message) {
       System.out.println("Sending " + message.getClass().getSimpleName());
+      final byte[] messageBytes = message.getBytes();
+      System.out.println(Arrays.toString(messageBytes));
+
       if (commPort.isOpen()) {
-         final byte[] messageBytes = message.getBytes();
          commPort.writeBytes(messageBytes, messageBytes.length);
-         System.out.println(Arrays.toString(messageBytes));
          System.out.println("Sent!");
       } else {
          System.out.println("Not sent");
