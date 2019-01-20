@@ -2,7 +2,7 @@
 
 #define NUM_LEDS 24
 #define ROWS 4
-#define LED_PER_ROW NUM_LEDS / ROWS
+#define LED_PER_ROW (unsigned char)(NUM_LEDS / ROWS)
 #define DATA_PIN 8
 #define BLINK_PERIOD 500
 
@@ -38,9 +38,11 @@ void initRegisters()
 // Mirror every 2 rows when setting pixels to mimic the project's wiring
 void setPixelColor(uint8_t pixelNumber, uint32_t color)
 {
-    if ((pixelNumber / LED_PER_ROW) % 2 == 1)
+    if (((pixelNumber / LED_PER_ROW) % 2) == 1)
     {
-        pixelNumber = ((((pixelNumber % LED_PER_ROW) + 1) * LED_PER_ROW) - 1) - (pixelNumber % LED_PER_ROW);
+        // The following expression makes absolutely no sense because I wrote it at 4 in the morning...
+        // But hey... It works! :)
+        pixelNumber = ((pixelNumber / LED_PER_ROW) * LED_PER_ROW) + (((pixelNumber / LED_PER_ROW) * LED_PER_ROW) + LED_PER_ROW) - pixelNumber - 1;
     }
     pixels.setPixelColor(pixelNumber, color);
 }
@@ -52,7 +54,6 @@ void setRowOff()
     {
         setPixelColor(i, BLACK);
     }
-    pixels.show();
 }
 
 // Display the metro state
@@ -61,26 +62,18 @@ void setMetro()
     animationFlags[row] = option[0] << 1;
     for (uint8_t i = 0; i < 4; i++)
         setPixelColor((row * LED_PER_ROW) + i + 1, metroColors[i]);
-
-    pixels.show();
 }
 
 // Blink animation when the metro is down
 void updateMetro(uint8_t metroRow)
 {
-    long timeStamp = millis();
-    if (timeStamp - timer > BLINK_PERIOD)
+    for (uint8_t i = 0; i < LED_PER_ROW; i++)
     {
-        timer = timeStamp;
-        for (uint8_t i = 0; i < LED_PER_ROW; i++)
+        if ((animationFlags[metroRow] & (1 << i)) && i > 0 && i < 5)
         {
-            if ((animationFlags[metroRow] & (1 << i)) && i > 0 && i < 5)
-            {
-                setPixelColor(i * (metroRow + 1), ((animationFlags[metroRow] & (1 << (LED_PER_ROW + i))) > 0) ? BLACK : metroColors[i - 1]);
-                animationFlags[metroRow] ^= (1 << (LED_PER_ROW + i));
-            }
+            setPixelColor(i * (metroRow + 1), ((animationFlags[metroRow] & (1 << (LED_PER_ROW + i))) > 0) ? BLACK : metroColors[i - 1]);
+            animationFlags[metroRow] ^= (1 << (LED_PER_ROW + i));
         }
-        pixels.show();
     }
 }
 
@@ -92,7 +85,6 @@ void setTraffic()
     {
         setPixelColor(i, color);
     }
-    pixels.show();
 }
 
 // Display a countdown (progressbar)
@@ -111,7 +103,6 @@ void setBus()
             setPixelColor(i, BLACK);
         }
     }
-    pixels.show();
 }
 
 // Update all internal states (blinking, fading, sweeping...)
@@ -169,6 +160,22 @@ void setup()
     pixels.clear();
     pixels.show();
     initRegisters();
+
+    row = 0;
+    mode = 1;
+    updateRow();
+
+    row = 1;
+    mode = 1;
+    updateRow();
+
+    row = 2;
+    mode = 1;
+    updateRow();
+
+    row = 3;
+    mode = 1;
+    updateRow();
 }
 
 void loop()
@@ -189,5 +196,11 @@ void loop()
         }
     }
 
-    updateStates();
+    long timeStamp = millis();
+    if (timeStamp - timer > BLINK_PERIOD)
+    {
+        timer = timeStamp;
+        updateStates();
+    }
+    pixels.show();
 }
