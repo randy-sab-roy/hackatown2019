@@ -11,6 +11,7 @@ Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_GRB | NEO_KHZ800);
 const uint32_t GREEN = pixels.Color(0, 255, 0);
 const uint32_t RED = pixels.Color(255, 0, 0);
 const uint32_t BLUE = pixels.Color(0, 0, 255);
+const uint32_t PINK = pixels.Color(255, 0, 255);
 const uint32_t BLACK = pixels.Color(0, 0, 0);
 const uint32_t WHITE = pixels.Color(255, 255, 255);
 
@@ -19,6 +20,7 @@ const uint32_t metroColors[] = {pixels.Color(0, 0, 255), pixels.Color(255, 255, 
 byte modes[ROWS]; // 0 = Not assigned     1 = Metro     2 = Traffic     3 = Bus
 int animationFlags[ROWS];
 long timer;
+int demoPercentage = 100;
 
 byte row = -1;
 byte mode = -1;
@@ -92,11 +94,9 @@ void setBus()
 {
     for (uint16_t i = row * LED_PER_ROW; i < (row + 1) * LED_PER_ROW; i++)
     {
-
         if (i < (row * LED_PER_ROW) + ((option[0] * LED_PER_ROW) / 100))
         {
-            // TODO add ability to change the color
-            setPixelColor(i, BLUE);
+            setPixelColor(i, PINK);
         }
         else
         {
@@ -108,16 +108,35 @@ void setBus()
 // Update all internal states (blinking, fading, sweeping...)
 void updateStates()
 {
-    for (uint8_t i = 0; i < ROWS; i++)
+    long timeStamp = millis();
+    if (timeStamp - timer > BLINK_PERIOD)
     {
-        switch (modes[i])
+        timer = timeStamp;
+        for (uint8_t i = 0; i < ROWS; i++)
         {
-        case 1:
-            updateMetro(i);
-            break;
-
-        default:
-            break;
+            if (modes[i] == 1)
+            {
+                updateMetro(i);
+            }
+        }
+    }
+    // Demo mode
+    if (millis() % 1000 > 995)
+    {
+        --demoPercentage;
+        if (demoPercentage <= 0)
+        {
+            demoPercentage = 100;
+        }
+        for (uint8_t i = 0; i < ROWS; i++)
+        {
+            if (modes[i] == 3)
+            {
+                row = i;
+                mode = 3;
+                option[0] = demoPercentage;
+                updateRow();
+            }
         }
     }
 }
@@ -160,6 +179,31 @@ void setup()
     pixels.clear();
     pixels.show();
     initRegisters();
+
+    // Initial setup with colors
+    row = 0;
+    mode = 1;
+    option[0] = 0b0100;
+    updateRow();
+
+    row = 1;
+    mode = 2;
+    option[0] = 0xff;
+    option[1] = 0x00;
+    option[2] = 0x00;
+    updateRow();
+
+    row = 2;
+    mode = 3;
+    option[0] = 70;
+    updateRow();
+
+    row = 3;
+    mode = 2;
+    option[0] = 0x00;
+    option[1] = 0xff;
+    option[2] = 0x00;
+    updateRow();
 }
 
 void loop()
@@ -180,11 +224,7 @@ void loop()
         }
     }
 
-    long timeStamp = millis();
-    if (timeStamp - timer > BLINK_PERIOD)
-    {
-        timer = timeStamp;
-        updateStates();
-    }
+    // Update display
+    updateStates();
     pixels.show();
 }
