@@ -11,6 +11,7 @@ Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_GRB | NEO_KHZ800);
 const uint32_t GREEN = pixels.Color(0, 255, 0);
 const uint32_t RED = pixels.Color(255, 0, 0);
 const uint32_t BLUE = pixels.Color(0, 0, 255);
+const uint32_t PINK = pixels.Color(255, 0, 255);
 const uint32_t BLACK = pixels.Color(0, 0, 0);
 const uint32_t WHITE = pixels.Color(255, 255, 255);
 
@@ -92,11 +93,9 @@ void setBus()
 {
     for (uint16_t i = row * LED_PER_ROW; i < (row + 1) * LED_PER_ROW; i++)
     {
-
         if (i < (row * LED_PER_ROW) + ((option[0] * LED_PER_ROW) / 100))
         {
-            // TODO add ability to change the color
-            setPixelColor(i, BLUE);
+            setPixelColor(i, PINK);
         }
         else
         {
@@ -108,16 +107,16 @@ void setBus()
 // Update all internal states (blinking, fading, sweeping...)
 void updateStates()
 {
-    for (uint8_t i = 0; i < ROWS; i++)
+    long timeStamp = millis();
+    if (timeStamp - timer > BLINK_PERIOD)
     {
-        switch (modes[i])
+        timer = timeStamp;
+        for (uint8_t i = 0; i < ROWS; i++)
         {
-        case 1:
-            updateMetro(i);
-            break;
-
-        default:
-            break;
+            if (modes[i] == 1)
+            {
+                updateMetro(i);
+            }
         }
     }
 }
@@ -160,8 +159,34 @@ void setup()
     pixels.clear();
     pixels.show();
     initRegisters();
+
+    // Testing code
+    row = 0;
+    mode = 1;
+    option[0] = 0b0100;
+    updateRow();
+
+    row = 1;
+    mode = 2;
+    option[0] = 0xff;
+    option[1] = 0x00;
+    option[2] = 0x00;
+    updateRow();
+
+    row = 2;
+    mode = 3;
+    option[0] = 70;
+    updateRow();
+
+    row = 3;
+    mode = 2;
+    option[0] = 0x00;
+    option[1] = 0xff;
+    option[2] = 0x00;
+    updateRow();
 }
 
+int temp = 70;
 void loop()
 {
     if (Serial.available() > 0)
@@ -179,12 +204,23 @@ void loop()
             updateRow();
         }
     }
+    // Testing code
 
-    long timeStamp = millis();
-    if (timeStamp - timer > BLINK_PERIOD)
+    if (millis() % 1000 > 995)
     {
-        timer = timeStamp;
-        updateStates();
+        row = 2;
+        mode = 3;
+        option[0] = --temp;
+        updateRow();
+        
+        if (temp <= 0) {
+            temp = 100;
+        }
+        
     }
+
+    //
+
+    updateStates();
     pixels.show();
 }
