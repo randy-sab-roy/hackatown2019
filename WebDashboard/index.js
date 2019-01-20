@@ -1,5 +1,10 @@
 const data = [];
 
+function changeLineType(id, service) {
+	data[id] = { service };
+	refreshList();
+}
+
 function convertRoute(route) {
 	route = +route;
 	const quotient = Math.floor(route / 10);
@@ -41,7 +46,7 @@ function lineToHTML(id, data) {
 		+ `<h3 class="font-weight-bold">Ligne ${+id + 1} :</h3>`
 		+ `</div>`
 		+ `<div class="col-2">`
-		+ `	<select class="custom-select">`
+		+ `	<select class="custom-select" onchange="changeLineType(${id}, this.value);">`
 		+ `		<option value="metro" ${(data.service === "metro") ? "selected" : ""}>Métro</option>`
 		+ `		<option value="bus" ${(data.service === "bus") ? "selected" : ""}>Bus</option>`
 		+ `		<option value="trafic" ${(data.service === "trafic") ? "selected" : ""}>Trafic</option>`
@@ -85,10 +90,10 @@ function busToHTML(data) {
 
 function traficToHTML(data) {
 	return `<div class="col-4">`
-		+ `<input type="text" class="form-control" value="${data.origine}" placeholder="Origin"/>`
+		+ `<input type="text" class="form-control" value="${data.origine || ""}" placeholder="Origin"/>`
 		+ `</div>`
 		+ `<div class="col-4">`
-		+ `<input type="text" class="form-control" value="${data.destination}" placeholder="Destination"/>`
+		+ `<input type="text" class="form-control" value="${data.destination || ""}" placeholder="Destination"/>`
 		+ `</div>`;
 }
 
