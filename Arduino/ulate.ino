@@ -11,11 +11,11 @@ Adafruit_NeoPixel pixels(NUM_LEDS, DATA_PIN, NEO_GRB | NEO_KHZ800);
 const uint32_t GREEN = pixels.Color(0, 255, 0);
 const uint32_t RED = pixels.Color(255, 0, 0);
 const uint32_t BLUE = pixels.Color(0, 0, 255);
-const uint32_t PINK = pixels.Color(255, 0, 255);
 const uint32_t BLACK = pixels.Color(0, 0, 0);
 const uint32_t WHITE = pixels.Color(255, 255, 255);
 
 const uint32_t metroColors[] = {pixels.Color(0, 0, 255), pixels.Color(255, 255, 0), pixels.Color(0, 255, 0), pixels.Color(255, 50, 0)};
+const uint32_t busColors[] = {pixels.Color(255, 0, 255), pixels.Color(255, 255, 255), pixels.Color(255, 128, 0), pixels.Color(127, 127, 255)};
 
 byte modes[ROWS]; // 0 = Not assigned     1 = Metro     2 = Traffic     3 = Bus
 int animationFlags[ROWS];
@@ -96,7 +96,7 @@ void setBus()
     {
         if (i < (row * LED_PER_ROW) + ((option[0] * LED_PER_ROW) / 100))
         {
-            setPixelColor(i, PINK);
+            setPixelColor(i, busColors[row]);
         }
         else
         {
@@ -133,7 +133,7 @@ void updateStates()
             if (modes[i] == 3)
             {
                 row = i;
-                mode = 3;
+                mode = 3; 
                 option[0] = demoPercentage;
                 updateRow();
             }
