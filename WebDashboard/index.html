@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ULate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+</head>
+
+<body style="background-image: url('background.jpg'); background-size: cover;">
+    <div class="container-fluid">
+        <!-- HEADER -->
+        <div class="row">
+            <div class="col mt-5" style="text-align: center;">
+                <h1>ULate Control Panel</h1>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="row">
+            <div class="col m-5" id="lines" style="background: rgba(1, 1, 1, 0.1);">
+                <!-- Dynamically written in JS -->
+                <div class="row p-4">
+                    <div class="col-2" style="text-align: center;">
+                        <h3 class="font-weight-bold">Ligne 1 :</h3>
+                    </div>
+                    <div class="col-2">
+                        <select class="custom-select">
+                            <option value="metro" selected>Métro</option>
+                            <option value="bus">Bus</option>
+                            <option value="trafic">Trafic</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                    </div>
+                </div>
+
+                <div class="row p-4">
+                    <div class="col-2" style="text-align: center;">
+                        <h3 class="font-weight-bold">Ligne 2 :</h3>
+                    </div>
+                    <div class="col-2">
+                        <select class="custom-select">
+                            <option value="metro">Métro</option>
+                            <option value="bus" selected>Bus</option>
+                            <option value="trafic">Trafic</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <select class="custom-select">
+                            <option value="10">10</option>
+                            <option value="51">51</option>
+                            <option value="73">73</option>
+                            <option value="81">81</option>
+                            <option value="91">91</option>
+                            <option value="146">146</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <select class="custom-select">
+                            <option value="1">Crémazie / Chabot</option>
+                            <option value="2">Fabre / Crémazie</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row p-4">
+                    <div class="col-2" style="text-align: center;">
+                        <h3 class="font-weight-bold">Ligne 3 :</h3>
+                    </div>
+                    <div class="col-2">
+                        <select class="custom-select">
+                            <option value="metro">Métro</option>
+                            <option value="bus">Bus</option>
+                            <option value="trafic" selected>Trafic</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="row">
+            <div class="col" style="text-align: center;">
+                <button type="button" class="btn btn-primary btn-lg" style="font-size: 5em; border-radius: 0.2em;">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAyG2RNJdA4I8BFpBs6eKSTKPmiTygkj-Q",
+            authDomain: "ulate-6625b.firebaseapp.com",
+            databaseURL: "https://ulate-6625b.firebaseio.com",
+            projectId: "ulate-6625b",
+            storageBucket: "ulate-6625b.appspot.com",
+            messagingSenderId: "818094889050"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="intersections.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
