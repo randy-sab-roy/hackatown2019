@@ -77,18 +77,22 @@ function lineToHTML(id, data) {
 		+ `		<option value="metro" ${(data.service === "metro") ? "selected" : ""}>Métro</option>`
 		+ `		<option value="bus" ${(data.service === "bus") ? "selected" : ""}>Bus</option>`
 		+ `		<option value="trafic" ${(data.service === "trafic") ? "selected" : ""}>Trafic</option>`
+		+ `		<option value="off" ${(data.service === "off") ? "selected" : ""}>Off</option>`
 		+ `	</select>`
 		+ `</div>`;
 
 	switch (data.service) {
 		case "metro":
-			html += metroToHTML(data);
+			html += metroOrOffToHTML(data);
 			break;
 		case "bus":
 			html += busToHTML(id, data);
 			break;
 		case "trafic":
 			html += traficToHTML(id, data);
+			break;
+		case "off":
+			html += metroOrOffToHTML(data);
 			break;
 		default:
 			break;
@@ -98,7 +102,7 @@ function lineToHTML(id, data) {
 	return html;
 }
 
-function metroToHTML(line) {
+function metroOrOffToHTML(line) {
 	return `<div class="col-4">`
 		+ `</div>`
 		+ `<div class="col-4">`
