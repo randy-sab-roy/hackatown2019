@@ -1,8 +1,32 @@
 const data = [];
 
+function updateDatabase() {
+	const lines = firebase.firestore().collection("boards").doc("7qOUSBuRUMwagevZd8ch").collection("lines");
+	data.forEach((x, i) => {
+		lines.doc(i+"").set(x);
+	});
+}
+
 function changeLineType(id, service) {
 	data[id] = { service };
 	refreshList();
+}
+
+function changeBusRoute(id, route) {
+	data[id].route = route;
+	refreshList();
+}
+
+function changeBusStop(id, stop) {
+	data[id].intersection = +stop;
+}
+
+function changeOrigin(id, origin) {
+	data[id].origine = origin;
+}
+
+function changeDestination(id, destination) {
+	data[id].destination = destination;
 }
 
 function convertRoute(route) {
@@ -22,17 +46,20 @@ function convertRoute(route) {
 	}
 }
 
-function busRouteHTML() {
-	let html = `<select class="custom-select">`;
-	html += Object.keys(routes).map(x => `<option value="${x}">${convertRoute(x)}</option>`).join("");
+function busRouteHTML(id, route) {
+	let html = `<select class="custom-select" onchange="changeBusRoute(${id}, this.value)">`;
+	html += Object.keys(routes).map(x => `<option value="${x}" ${(x === route) ? "selected" : ""}>${convertRoute(x)}</option>`).join("");
 	html += `</select>`;
 	return html;
 }
 
-function busStopHTML(route) {
-	let html = `<select class="custom-select">`;
+function busStopHTML(id, route, intersection) {
+	let html = `<select class="custom-select" onchange="changeBusStop(${id}, this.value)">`;
 	if (route != null) {
-		// TODO
+		html += routes[route].map(x => {
+			const intersection = intersections.find(y => y.id === x);
+			return `<option value="${intersection.id}">${intersection.name}</option>`;
+		}).join("");
 	} else {
 		html += intersections.map(x => `<option value="${x.id}">${x.name}</option>`).join("");
 	}
@@ -58,10 +85,10 @@ function lineToHTML(id, data) {
 			html += metroToHTML(data);
 			break;
 		case "bus":
-			html += busToHTML(data);
+			html += busToHTML(id, data);
 			break;
 		case "trafic":
-			html += traficToHTML(data);
+			html += traficToHTML(id, data);
 			break;
 		default:
 			break;
@@ -78,22 +105,22 @@ function metroToHTML(line) {
 		+ `</div>`;
 }
 
-function busToHTML(data) {
+function busToHTML(id, data) {
 	let html = `<div class="col-4">`;
-	html += busRouteHTML();
+	html += busRouteHTML(id, data.route);
 	html += `</div>`
 		+ `<div class="col-4">`;
-	html += busStopHTML();
+	html += busStopHTML(id, data.route, data.intersection);
 	html += `</div>`;
 	return html;
 }
 
-function traficToHTML(data) {
+function traficToHTML(id, data) {
 	return `<div class="col-4">`
-		+ `<input type="text" class="form-control" value="${data.origine || ""}" placeholder="Origin"/>`
+		+ `<input type="text" class="form-control" value="${data.origine || ""}" placeholder="Origin" onchange="changeOrigin(${id}, this.value)"/>`
 		+ `</div>`
 		+ `<div class="col-4">`
-		+ `<input type="text" class="form-control" value="${data.destination || ""}" placeholder="Destination"/>`
+		+ `<input type="text" class="form-control" value="${data.destination || ""}" placeholder="Destination" onchange="changeDestination(${id}, this.value)"/>`
 		+ `</div>`;
 }
 
