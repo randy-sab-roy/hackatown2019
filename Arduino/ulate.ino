@@ -71,7 +71,7 @@ void updateMetro(uint8_t metroRow)
     {
         if ((animationFlags[metroRow] & (1 << i)) && i > 0 && i < 5)
         {
-            setPixelColor(i * (metroRow + 1), ((animationFlags[metroRow] & (1 << (LED_PER_ROW + i))) > 0) ? BLACK : metroColors[i - 1]);
+            setPixelColor(i + (metroRow * LED_PER_ROW), ((animationFlags[metroRow] & (1 << (LED_PER_ROW + i))) > 0) ? BLACK : metroColors[i - 1]);
             animationFlags[metroRow] ^= (1 << (LED_PER_ROW + i));
         }
     }
@@ -160,22 +160,6 @@ void setup()
     pixels.clear();
     pixels.show();
     initRegisters();
-
-    row = 0;
-    mode = 1;
-    updateRow();
-
-    row = 1;
-    mode = 1;
-    updateRow();
-
-    row = 2;
-    mode = 1;
-    updateRow();
-
-    row = 3;
-    mode = 1;
-    updateRow();
 }
 
 void loop()
